@@ -40,7 +40,7 @@ await model.loadRecipe(id);
 recipeView.render(model.state.recipe);
 
   } catch (err) {
-    alert(err);
+    console.error(`${err}****`);
   }
 };
 ['hashchange', 'load'].forEach(ev => window.addEventListener (ev, controlRecipes));
