@@ -43,4 +43,8 @@ recipeView.render(model.state.recipe);
     console.error(`${err}****`);
   }
 };
-['hashchange', 'load'].forEach(ev => window.addEventListener (ev, controlRecipes));
+
+const init = function () {
+  recipeView.addHandlerRender(controlRecipes);
+};
+init();
