@@ -536,6 +536,15 @@ const controlRecipes = async function() {
         console.error(`${err}****`);
     }
 };
+const controlSearchResults = async function() {
+    try {
+        await _modelJs.loadSearchResults("pizza");
+        console.log(_modelJs.state.search.results);
+    } catch (err) {
+        console.log(err);
+    }
+};
+controlSearchResults();
 const init = function() {
     (0, _recipeViewJsDefault.default).addHandlerRender(controlRecipes);
 };
@@ -1776,15 +1785,20 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "state", ()=>state);
 parcelHelpers.export(exports, "loadRecipe", ()=>loadRecipe);
+parcelHelpers.export(exports, "loadSearchResults", ()=>loadSearchResults);
 var _regeneratorRuntime = require("regenerator-runtime");
 var _configJs = require("../js/views/config.js");
 var _helpersJs = require("./helpers.js");
 const state = {
-    recipe: {}
+    recipe: {},
+    search: {
+        query: "",
+        results: []
+    }
 };
 const loadRecipe = async function(id) {
     try {
-        const data = await (0, _helpersJs.getJson)(`${(0, _configJs.API_URL)}/${id}`);
+        const data = await (0, _helpersJs.getJson)(`${(0, _configJs.API_URL)}${id}`);
         // const res = await fetch(`${API_URL}/${id}`);
         // const data = await res.json();
         // if (!res.ok) throw new Error(`${data.message} (${res.status})`);
@@ -1803,6 +1817,25 @@ const loadRecipe = async function(id) {
         console.log(state.recipe);
     } catch (err) {
         alert(err);
+    }
+};
+const loadSearchResults = async function(query) {
+    try {
+        state.search.query = query;
+        const data = await (0, _helpersJs.getJson)(`${(0, _configJs.API_URL)}?search=${query}`);
+        console.log(data);
+        state.search.results = data.data.recipes.map((rec)=>{
+            return {
+                id: rec.id,
+                title: rec.title,
+                publisher: rec.publisher,
+                image: rec.image_url
+            };
+        });
+        console.log(state.search.results);
+    } catch (err) {
+        console.error(`${err}********`);
+        throw err;
     }
 };
 
@@ -2378,7 +2411,7 @@ var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 parcelHelpers.defineInteropFlag(exports);
 parcelHelpers.export(exports, "API_URL", ()=>API_URL);
 parcelHelpers.export(exports, "TIMEOUT_SEC", ()=>TIMEOUT_SEC);
-const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes";
+const API_URL = "https://forkify-api.herokuapp.com/api/v2/recipes/";
 const TIMEOUT_SEC = 10;
 
 },{"@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"gkKU3":[function(require,module,exports) {
