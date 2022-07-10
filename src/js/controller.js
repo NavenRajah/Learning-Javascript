@@ -1,13 +1,14 @@
 import * as model from './model.js';
 import recipeView from './views/recipeView.js';
+import searchView from './views/searchView.js';
 
 
 import 'core-js/stable';
 import 'regenerator-runtime/runtime';
-import recipeView from './views/recipeView.js';
+import {async} from 'regenerator-runtime';
 // console.log('icons');
 
-const recipeContainer = document.querySelector('.recipe');
+// const recipeContainer = document.querySelector('.recipe');
 
 const timeout = function (s) {
   return new Promise(function (_, reject) {
@@ -46,15 +47,20 @@ recipeView.render(model.state.recipe);
 
 const controlSearchResults = async function() {
   try{
-await model.loadSearchResults('pizza');
+
+    const query = searchView.getQuery();
+if(!query) return;
+
+await model.loadSearchResults('query');
 console.log(model.state.search.results);
   }catch(err) {
     console.log(err);
   }
 };
-controlSearchResults();
+// controlSearchResults();
 
 const init = function () {
   recipeView.addHandlerRender(controlRecipes);
+  searchView.addHandlerSearch(controlSearchResults);
 };
 init();
