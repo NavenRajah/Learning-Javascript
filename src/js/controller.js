@@ -28,7 +28,7 @@ console.log('TEST');
 const controlRecipes = async function () {
   try {
     const id = window.location.hash.slice(1);
-    console.log(id);
+    // console.log(id);
 
     if(!id) return;
     recipeView.renderSpinner();
@@ -47,7 +47,6 @@ recipeView.render(model.state.recipe);
 
 const controlSearchResults = async function() {
   try{
-
     const query = searchView.getQuery();
 if(!query) return;
 
